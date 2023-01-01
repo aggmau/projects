@@ -102,7 +102,10 @@ def get_hour(inputdate):
             time_data3 = re.findall(pattern3, inputdate)
             if not time_data3:
                 time_data4 = re.findall(pattern4, inputdate)
-                hour_value = format_hour(time_data4[0])
+                if not time_data4:
+                    hour_value = "00"
+                else:
+                    hour_value = format_hour(time_data4[0])
             else:
                 hour_value = check_abbreviation(time_data3[0])
         else:
@@ -126,6 +129,8 @@ def check_abbreviation(time_data):
     elif time_abbrev.lower() == "pm":
         if hour == "12":
             hour_value = "12"
+        elif int(hour) > 12:
+            hour_value = str(hour)
         else:
             hour_value = str(int(hour) + 12)
     else:
@@ -149,8 +154,11 @@ def get_minute(inputdate):
     time_data = re.findall(time_pattern1, inputdate)
     if not time_data:
         time_data2 = re.findall(time_pattern2, inputdate)
-        minute = time_data2[0][-2:]
-        minute_value = minute
+        if not time_data2:
+            minute_value = "00"
+        else:
+            minute = time_data2[0][-2:]
+            minute_value = minute
     else:
         minute = time_data[0][-5:-3]
         minute_value = minute
@@ -173,7 +181,7 @@ def get_second(inputdate):
 
 
 def main():
-    inputdate ="12/12/2022 23:56"
+    inputdate ="DEC-21-2022 22.51 pm"
 
     checkday = get_day(inputdate)
     checkmonth = get_month(inputdate)
