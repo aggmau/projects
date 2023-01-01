@@ -50,7 +50,12 @@ def get_month(inputdate):
                     month_value = dict_month[(month4_val[0:2])]
             else:
                 month3_val = re.sub("[\\-\\/]", "", month3[0])
-                month_value = dict_month[(month3_val[4:6])]
+                if int(month3_val[4:6]) > 12:
+                    month_value = dict_month[(month3_val[-2:])]
+                elif int(month3_val[-2:]) > 12:
+                    month_value = dict_month[(month3_val[4:6])]
+                else:
+                    month_value = dict_month[(month3_val[4:6])]
         else:
             month_value = dict_month[month2[0]]
     else:
@@ -83,8 +88,13 @@ def get_day(inputdate):
                 else:
                     day_value = date_data3[2:4]
         else:
-            day_value = re.sub("\\D", "", date_data2[0])
-            day_value = day_value[-2:]
+            day_data = re.sub("\\D", "", date_data2[0])
+            if int(day_data[-2:]) > 12:
+                day_value = day_data[-2:]
+            elif int(day_data[-4:-2]) > 12:
+                day_value = day_data[-4:-2]
+            else:
+                day_value = day_data[-2:]
     else:
         day_value = re.sub("\\D", "", date_data[0])
         day_value = day_value[-6:-4]
@@ -181,7 +191,7 @@ def get_second(inputdate):
 
 
 def main():
-    inputdate ="DEC-21-2022 22.51 pm"
+    inputdate ="2022-13-30 01:13:27 AM"
 
     checkday = get_day(inputdate)
     checkmonth = get_month(inputdate)
