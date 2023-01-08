@@ -15,23 +15,32 @@ def get_month(inputdate):
     regex_pattern3 = "\\d{4}[\\-\\/]\\d{2}[\\-\\/]\\d{2}"
     regex_pattern4 = "\\d{2}[\\-\\/]\\d{2}[\\-\\/]\\d{4}"
     dict_month = {
-        "mei":"may",
-        "agu":"aug",
-        "okt":"oct",
-        "nop":"nov",
-        "des":"dec",
-        "01":"jan",
-        "02":"feb",
-        "03":"mar",
-        "04":"apr",
-        "05":"may",
-        "06":"jun",
-        "07":"jul",
-        "08":"aug",
-        "09":"sep",
-        "10":"oct",
-        "11":"nov",
-        "12":"dec"
+            "mei": "may",
+            "agu": "aug",
+            "okt": "oct",
+            "nop": "nov",
+            "des": "dec",
+            "01": "jan",
+            "02": "feb",
+            "03": "mar",
+            "04": "apr",
+            "05": "may",
+            "06": "jun",
+            "07": "jul",
+            "08": "aug",
+            "09": "sep",
+            "10": "oct",
+            "11": "nov",
+            "12": "dec",
+            "1": "jan",
+            "2": "feb",
+            "3": "mar",
+            "4": "apr",
+            "5": "may",
+            "6": "jun",
+            "7": "jul",
+            "8": "aug",
+            "9": "sep",
     }
     month = re.findall(regex_pattern1, inputdate.lower())
     if not month:
@@ -42,12 +51,15 @@ def get_month(inputdate):
             if not month3:
                 #to match timeframe MM-DD-YYYY or MM/DD/YYYY
                 month4 = re.findall(regex_pattern4, inputdate.lower())
-                month4_val = re.sub("[\\-\\/]", "", month4[0])
-                if int(month4_val[0:2]) > 12:
-                    # to match timeframe DD-MM-YYYY or DD/MM/YYYY
-                    month_value = dict_month[(month4_val[2:4])]
+                if not month4:
+                    month_value = dict_month[str(datetime.now().month)]
                 else:
-                    month_value = dict_month[(month4_val[0:2])]
+                    month4_val = re.sub("[\\-\\/]", "", month4[0])
+                    if int(month4_val[0:2]) > 12:
+                        # to match timeframe DD-MM-YYYY or DD/MM/YYYY
+                        month_value = dict_month[(month4_val[2:4])]
+                    else:
+                        month_value = dict_month[(month4_val[0:2])]
             else:
                 month3_val = re.sub("[\\-\\/]", "", month3[0])
                 if int(month3_val[4:6]) > 12:
@@ -189,9 +201,8 @@ def get_second(inputdate):
         second_value = second
     return second_value
 
-
 def main():
-    inputdate ="2022-13-30 01:13:27 AM"
+    inputdate ="2 agustus 2023 18:00.00"
 
     checkday = get_day(inputdate)
     checkmonth = get_month(inputdate)
